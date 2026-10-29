@@ -1,0 +1,61 @@
+name: enhancer_model
+seed: 42
+
+model:
+  alphabet_size: 4
+  hidden_dim: 128
+  num_cnn_stacks: 5
+  dropout: 0.1
+
+dataset:
+  name: gosai
+  data_path: ./data/gosai_all.csv
+  seq_length: 200
+  streaming: False
+  train_size: null  # null = full train split; set an int to cap it
+
+loader:
+  global_batch_size: 64
+  eval_global_batch_size: 32
+  batch_size: 64
+  eval_batch_size: 32
+  num_workers: 4
+  pin_memory: True
+
+# ---------- GIL-style masked separator ----------
+# L = L_sta  +  lambda_reg * L_reg  +  beta_inv * L_inv
+#
+#   L_sta : x_st alone must predict y
+#   L_reg : mask ratio close to rho, bimodal distribution
+#   L_inv : V-REx variance across K-means-inferred envs on x_en
+#
+# Alternating optimisation:
+#   - warmup_epochs : no env inference yet (pure ERM on x_st)
+#   - every env_infer_every epochs, run K-means on x_en embeddings to refresh
+#     the env centroids, then assign env ids per batch during the update pass
+masked_separator:
+  target_idx: 0 # 0=hepg2, 1=k562, 2=sknsh
+    # null -> regress on mean(hepg2, k562, sknsh)
+  beta_inv: 1.0 # V-REx penalty weight
+  lambda_reg: 5.0 # mask regularisation weight (symmetric quadratic)
+  lambda_bimodal: 0.0 # bimodal term weight; keep 0 during primary training
+  lambda_smooth:
+    0.1 # TV smoothness on adjacent M values (0.0 = off; encourages
+    # contiguous invariant blocks; too large collapses to one block)
+  init_rho: 0.3 # fixed target stable ratio (not learnable)
+  num_envs: 3 # K for K-means env inference
+  warmup_epochs: 1 # epoch 1 = ERM warmup (no L_inv); V-REx from epoch 2
+  checkpoint_path: null # optional: resume from a masked_separator_*.ckpt
+  epoch_offset: 0 # set to the resumed ckpt's epoch when resuming
+  env_infer_every: 1 # re-run K-means every N epochs
+  kmeans_iters: 20
+  kmeans_samples: 8192 # cap on samples used for K-means fit per epoch
+
+train:
+  num_epochs: 4
+  lr: 0.0001
+  batch_size: 64
+  accumulate_grad_batches: 1
+
+optim:
+  weight_decay: 0.0

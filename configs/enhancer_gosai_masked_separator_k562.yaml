@@ -1,0 +1,48 @@
+name: enhancer_model
+seed: 42
+out_dir: ./runs/masked_separator_k562
+
+model:
+  alphabet_size: 4
+  hidden_dim: 128
+  num_cnn_stacks: 5
+  dropout: 0.1
+
+dataset:
+  name: gosai
+  data_path: ./data/gosai_all.csv
+  seq_length: 200
+  streaming: False
+  train_size: null
+
+loader:
+  global_batch_size: 64
+  eval_global_batch_size: 32
+  batch_size: 64
+  eval_batch_size: 32
+  num_workers: 8
+  pin_memory: True
+
+masked_separator:
+  target_idx: 1 # K562
+  beta_inv: 1.0
+  lambda_reg: 5.0
+  lambda_bimodal: 0.0
+  lambda_smooth: 0.1
+  init_rho: 0.3
+  num_envs: 3
+  warmup_epochs: 1 # epoch 1 = ERM warmup (no L_inv); V-REx from epoch 2
+  checkpoint_path: null # optional: resume from a masked_separator_*.ckpt
+  epoch_offset: 0 # set to the resumed ckpt's epoch when resuming
+  env_infer_every: 1
+  kmeans_iters: 20
+  kmeans_samples: 8192
+
+train:
+  num_epochs: 4
+  lr: 0.0001
+  batch_size: 64
+  accumulate_grad_batches: 1
+
+optim:
+  weight_decay: 0.0

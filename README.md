@@ -4,7 +4,6 @@
 
 [![NeurIPS 2026](https://img.shields.io/badge/NeurIPS-2026-blue.svg)](https://neurips.cc/Conferences/2026)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-green)](https://creativecommons.org/licenses/by/4.0/)
-[![Python](https://img.shields.io/badge/python-3.11%E2%80%933.14-3776ab.svg)](pyproject.toml)
 [![Checkpoints](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-separator%20ckpts-ffce00.svg)](https://huggingface.co/DabinJeong/LocoGen)
 
 <p align="center">

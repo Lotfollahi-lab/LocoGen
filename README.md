@@ -3,7 +3,7 @@
 > Locality-controlled guidance that steers a **frozen** masked diffusion language model toward high-activity enhancer DNA — no fine-tuning, no reward model training.
 
 [![NeurIPS 2026](https://img.shields.io/badge/NeurIPS-2026-blue.svg)](https://neurips.cc/Conferences/2026)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#-license)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-blue)](https://creativecommons.org/licenses/by/4.0/)(#-license)
 [![Python](https://img.shields.io/badge/python-3.11%E2%80%933.14-3776ab.svg)](pyproject.toml)
 [![Checkpoints](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-separator%20ckpts-ffce00.svg)](https://huggingface.co/DabinJeong/LocoGen)
 
